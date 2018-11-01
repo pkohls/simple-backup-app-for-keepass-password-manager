@@ -9,30 +9,34 @@ from email.mime.base import MIMEBase
 from email import encoders
 
 # e-mail configuration
-SENDER_LOGIN = environ.get('SUSER')
-SENDER_PASS = environ.get('SPASS')
-SMTP_SERVER = 'smtp.gmail.com'
-SMTP_PORT = 587
-RECIPIENT_EMAIL = environ.get('DMAIL')
-BACKUP_FILES_COUNT = 30
+SENDER_LOGIN = environ.get('SUSER')  # sender e-mail address (login)
+SENDER_PASS = environ.get('SPASS')  # sender password
+SMTP_SERVER = 'smtp.gmail.com'  # sender smtp server
+SMTP_PORT = 587  # sender smtp port
+RECIPIENT_EMAIL = environ.get('DMAIL')  # recipient email address
+BACKUP_FILES_COUNT = 30  # number of backups
 
 # backup configuration
-SRC_FILE = 'testfile.zip'  # database file name
-DST_DIR = 'backup'  # folder name
-DAY_SEND_TO_EMAIL = 5
+SRC_FILE = 'database.kdbx'  # database file name
+DST_DIR = 'backup'  # backup folder name
+DAY_SEND_TO_EMAIL = 4  # the day of the week in which the backup will be sent to the email address
+
 
 BASE_DIR = str(Path().absolute())
 BCK_DIR = f'{BASE_DIR}/{DST_DIR}'
 if not path.exists(BCK_DIR):
 	makedirs(BCK_DIR)
-DT = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
-FILES = listdir(f'{BASE_DIR}/{DST_DIR}')
+DTN = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 DATE = datetime.today().strftime('%d/%m/%Y')
+FILES = listdir(f'{BASE_DIR}/{DST_DIR}')
 WEEKDAY = datetime.isoweekday(datetime.today())
 
 
 def copy_file():
-	copy2(f'{BASE_DIR}/{SRC_FILE}', f'{BASE_DIR}/{DST_DIR}/{DT}_{SRC_FILE}')
+	try:
+		copy2(f'{BASE_DIR}/{SRC_FILE}', f'{BASE_DIR}/{DST_DIR}/{DTN}_{SRC_FILE}')
+	except Exception as ex:
+		print(ex)
 
 
 def remove_last_file():
