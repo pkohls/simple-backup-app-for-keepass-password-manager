@@ -1,3 +1,3 @@
-# Simple backup program for keepas database
+# Simple backup program for keepass database
 
 
