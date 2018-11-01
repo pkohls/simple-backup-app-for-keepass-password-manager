@@ -14,10 +14,12 @@ SENDER_PASS = environ.get('SPASS')
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 RECIPIENT_EMAIL = environ.get('DMAIL')
+BACKUP_FILES_COUNT = 30
 
 # backup configuration
-SRC_FILE = 'testfile.zip'  # file name
+SRC_FILE = 'testfile.zip'  # database file name
 DST_DIR = 'backup'  # folder name
+DAY_SEND_TO_EMAIL = 5
 
 BASE_DIR = str(Path().absolute())
 BCK_DIR = f'{BASE_DIR}/{DST_DIR}'
@@ -38,7 +40,7 @@ def remove_last_file():
 	if files_count > 0:
 		FILES.sort()
 		last_item = FILES[0]
-		if files_count == 6:
+		if files_count == BACKUP_FILES_COUNT:
 			remove(f'{BASE_DIR}/{DST_DIR}/{last_item}')
 
 
@@ -79,7 +81,7 @@ def send_file_to_email():
 def main():
 	copy_file()
 	remove_last_file()
-	if WEEKDAY == 4:
+	if WEEKDAY == DAY_SEND_TO_EMAIL:
 		try:
 			send_file_to_email()
 		except Exception as ex:
