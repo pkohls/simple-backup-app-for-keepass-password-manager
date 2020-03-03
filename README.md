@@ -1,1 +1,1 @@
-# Simple backup app for keepass remote database
+# Simple backup app for keepass password manager
